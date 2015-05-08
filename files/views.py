@@ -22,7 +22,7 @@ def index( request):
 		fileMap.externalName = ufile
 		fileMap.created_on = datetime.datetime.now()
 		fileMap.password_protected = True
-		fileMap.password = 'sambha'
+		fileMap.password = request.POST.get('password')
 		fileMap.save()
 		internal_name = handle_uploaded_file(ufile,fileMap.id)
 		externalLink = "http://localhost:8000/download?fileName=%s" % internal_name
