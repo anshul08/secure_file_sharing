@@ -1,0 +1,13 @@
+<html><body>
+<form enctype="multipart/form-data" action="" method="post">
+	{% csrf_token %}
+	<p>File: <input type="file" name="file"></p>
+
+	<p>Password Protected: <input type="checkbox" name="password_protected"></p>
+	
+	<p>Password: <input type="password" name="password"></p>
+	
+	<p><input type="submit" value="Upload"></p>
+
+</form>
+</body></html>
