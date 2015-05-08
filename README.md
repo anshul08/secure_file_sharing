@@ -13,6 +13,9 @@ Installation Steps:
 	python manage.py migrate
 
 	This should create the required table.
+	
+	Run this command in shell prompt to create symlink for mysql client libraries
+	sudo ln -s /usr/local/mysql/lib/libmysqlclient.18.dylib /usr/lib/libmysqlclient.18.dylib
 
 	Start Django server using following command:
 	python manage.py runserver
