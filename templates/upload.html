@@ -1,6 +1,7 @@
 <html><body>
 <form enctype="multipart/form-data" action="" method="post">
 	{% csrf_token %}
+	{{error}}
 	<p>File: <input type="file" name="file"></p>
 
 	<p>Password Protected: <input type="checkbox" name="password_protected"></p>
