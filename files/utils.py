@@ -2,6 +2,12 @@ from hashlib import md5
 from Crypto.Cipher import AES
 from Crypto import Random
 import cStringIO as StringIO
+from django.template.context_processors import csrf
+from django.shortcuts import render_to_response
+
+def render_response(template, request, context = {} ):
+    context.update(csrf(request))
+    return render_to_response(template, context)
 
 def derive_key_and_iv(password, salt, key_length, iv_length):
     d = d_i = ''
