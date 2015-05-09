@@ -26,7 +26,7 @@ def index( request):
 		fileMap = FileLink()
 		fileMap.externalName = ufile
 		fileMap.created_on = datetime.datetime.now()
-		fileMap.password_protected = True
+		fileMap.password_protected = request.POST.get('password_protected', False)
 		fileMap.password = request.POST.get('password')
 		fileMap.save()
 		internal_name = handle_uploaded_file(ufile,fileMap)
@@ -57,7 +57,7 @@ def get_file(request):
 		return HttpResponse("Link is more than 24 hours old hence expired")
 
 
-	password = 'localkeyofclient'# if not fileMap.password_protected else fileMap.password
+	password = 'localkeyofclient' if not fileMap.password_protected else fileMap.password.encode('ascii','ignore')
 	abspath = '/tmp/%s.enc' % fileName.zfill(5)
 	chunksize=24*1024
 	ufile = open(abspath,'r')
@@ -79,8 +79,9 @@ def handle_uploaded_file(f,fileMap):
 	id = '%s' % fileMap.id
 	suffix = id.zfill(5)
 	internal_file_name = '/tmp/%s.enc' % suffix
-	password = 'localkeyofclient'# if not fileMap.password_protected else fileMap.password
 
+	password = 'localkeyofclient' if not fileMap.password_protected else fileMap.password.encode('ascii','ignore')
+	print "Password:",password,fileMap.password
 	destination = open(internal_file_name, 'wb+')
 	encrypt(f,destination,password, 32)
 	return suffix
