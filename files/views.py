@@ -12,6 +12,8 @@ from utils import render_response
 import uuid
 import socket
 
+location = '/tmp/%s.enc'
+
 def index( request):
 	if request.method == 'GET':
 		return render_response('upload.html',request)
@@ -51,11 +53,11 @@ def get_file(request):
 		return HttpResponse("Link is more than 24 hours old hence expired")
 
 	password = 'localkeyofclient' if not fileMap.password_protected else fileMap.password.encode('ascii','ignore')
-	abspath = '/tmp/%s.enc' % fileName
+	abspath = location % fileName
 	ufile = open(abspath,'r')
 	
 	outfile = StringIO.StringIO()
-	outfile=decrypt(ufile,outfile,password)
+	outfile = decrypt(ufile,outfile,password)
 
 	response = HttpResponse(content=outfile.getvalue())
 	response['Content-Type'] = 'mimetype/submimetype'
@@ -65,7 +67,7 @@ def get_file(request):
 def handle_uploaded_file(f,fileMap):
 	id = '%s' % fileMap.id
 	suffix = fileMap.linkSuffix
-	internal_file_name = '/tmp/%s.enc' % suffix
+	internal_file_name = location % suffix
 	password = 'localkeyofclient' if not fileMap.password_protected else fileMap.password.encode('ascii','ignore')
 	destination = open(internal_file_name, 'wb+')
 	encrypt(f,destination,password)
